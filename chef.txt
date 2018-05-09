@@ -1,0 +1,74 @@
+http://tinyurl.com/jdfc5b2
+
+install vagrant 
+install virtual box (windows users check virtualization on CPU) (5.0.20)
+
+vagrant box add centos-6.5 http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_centos-6.5_chef-provisionerless.box
+
+create a directory: chef_class
+change to directory
+vagrant init centos-6.5
+
+vagrant up --provider=virtualbox
+
+vagrant ssh
+
+sudo curl https://omnitruck.chef.io/install.sh | sudo bash -s -- -c current -P chefdk
+
+ONLY IF YOU WANNA PLAY WITH RUBY
+sudo yum install ruby
+sudo yum install ruby-irb
+
+sudo rpm -iUvh http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
+sudo yum update -y
+
+sudo yum install docker-io -y 
+sudo service docker start
+sudo chkconfig docker on
+
+place in .bash_profile
+alias docker="sudo /usr/bin/docker"
+
+docker run hello-world
+
+chef gem install kitchen-docker
+
+add to path (in place in .bash_profile)
+/home/vagrant/.chefdk/gem/ruby/2.1.0/bin
+
+ssh -i .vagrant/machines/default/virtualbox/private_key -l vagrant -p 2222 localhost
+
+knife bootstrap localhost --ssh-port PORT --ssh-user vagrant --sudo --identity-file IDENTITY_FILE --node-name node1 --run-list 'recipe[learn_chef_httpd]'
+
+
+https://github.com/chef-training/chef-essentials-repo
+
+
+knife bootstrap 192.168.0.101 -x vagrant -P vagrant --sudo -N node1
+
+redo:
+knife node delete node1 -y
+
+knife cookbook bulk delete .
+
+on node1:
+sudo yum remove chef
+rm -rf
+rm -rf /var/chef
+rm -rf /etc/chef
+rm -rf /opt/chef
+
+***really just just /opt/chef, /etc/chef
+
+knife ssh "*:*" -x vagrant -P vagrant "sudo chef-client"
+
+
+https://wiki.intuit.com/pages/viewpage.action?spaceKey=ctodevappops&title=INTUchef+2.0#INTUchef2.0-INTUchefonboarding
+
+jkidd@kiddcorp.com
+Evals
+http://goo.gl/forms/Attium0BusZd02492
+http://tinyurl.com/zln3g2x
+
+
+
