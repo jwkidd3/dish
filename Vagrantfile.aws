@@ -1,0 +1,34 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+require 'vagrant-aws'
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "aws"
+
+   config.vm.provider 'aws' do |aws,override|
+        override.vm.synced_folder ".", "/vagrant", disabled: true
+
+	aws.access_key_id='AKIAIPIPCGBEDFKFFG5A'
+        aws.secret_access_key='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'
+        aws.keypair_name='vagrant'
+        
+	aws.region='us-west-2'
+        aws.ami= 'ami-b5ed9ccd'  #'ami-a5629edd'
+    	aws.instance_type='t2.large'
+        aws.security_groups=['default']
+
+	override.ssh.username='ubuntu'  #'centos'
+	override.ssh.private_key_path='./vagrant'
+   end
+   config.vm.provision "chef_client" do |chef|
+      chef.chef_server_url = "https://api.chef.io/organizations/kiddcorp"
+      chef.validation_client_name = "jwkidd3"
+      chef.validation_key_path = "jwkidd3.pem"
+      chef.add_role "docker"
+      chef.add_role "aws"
+
+      chef.delete_node = true
+      chef.delete_client = true
+   end
+end
