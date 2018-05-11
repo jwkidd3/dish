@@ -1,0 +1,31 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# All Vagrant configuration is done below. The "2" in Vagrant.configure
+# configures the configuration version (we support older styles for
+# backwards compatibility). Please don't change it unless you know what
+# you're doing.
+Vagrant.configure(2) do |config|
+ 
+  config.vm.box = "ubuntu/xenial64"
+
+ config.vm.define :one do |one| 
+    one.vm.hostname = "one.cluster"
+    one.vm.network :private_network, ip: "192.168.0.101"
+    one.vm.provider :virtualbox do |vb|
+      vb.customize ["modifyvm", :id, "--memory", 2424]
+      vb.customize ["modifyvm", :id, "--cpus", "2"]
+    end
+    one.vm.provision "chef_client" do |chef|
+     chef.chef_server_url = "https://api.chef.io/organizations/kiddcorp"
+     chef.validation_client_name = "jwkidd3"
+     chef.validation_key_path = "/Users/jwkidd3/vagrant_chef/chef-repo/.chef/jwkidd3.pem"
+     chef.add_role "docker"
+     chef.add_role "virtualbox"
+
+     chef.delete_node = true
+     chef.delete_client = true
+    end
+  end
+
+end
