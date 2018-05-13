@@ -22,7 +22,7 @@ Vagrant.configure("2") do |config|
 	override.ssh.private_key_path='./vagrant'
    end
    config.vm.provision "chef_client" do |chef|
-      chef.chef_server_url = "https://api.chef.io/organizations/kiddcorp"
+      chef.chef_server_url = "<insert url>"
       chef.validation_client_name = "jwkidd3"
       chef.validation_key_path = "jwkidd3.pem"
       chef.add_role "docker"
